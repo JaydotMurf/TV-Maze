@@ -4,6 +4,7 @@ $(document).ready(() => {
       this.$showsList = $('#showsList');
       this.$episodesArea = $('#episodesArea');
       this.$searchForm = $('#searchForm');
+      this.$imgNotFound = `imgs/default-Img.png`;
     }
 
     async getShows() {
@@ -26,25 +27,29 @@ $(document).ready(() => {
       this.$showsList.empty();
 
       for (let show of shows) {
-        const $show = $(
-          `<div data-show-id="${
-            show.show.id
-          }" class="Show col-md-12 col-lg-6 mb-4">
-             <div class="media">
-               <img
-                  src=${show.show.image.medium ? show.show.image.medium : null} 
-                  alt=${show.show.name}
-                  class="w-25 me-3">
-               <div class="media-body">
-                 <h5 class="text-primary">${show.show.name}</h5>
-                 <div><small>${show.show.summary}</small></div>
-                 <button class="btn btn-outline-light btn-sm Show-getEpisodes">
-                   Episodes
-                 </button>
-               </div>
-             </div>
-           </div>`
-        );
+        const imageSrc =
+          show.show.image && show.show.image !== 'null'
+            ? show.show.image.medium
+            : this.$imgNotFound;
+
+        const $show = $(`
+          <div data-show-id="${show.show.id}" class="Show col-md-12 col-lg-6 mb-4">
+            <div class="card">
+              <img
+                src="${imageSrc}"
+                alt="${show.show.name}"
+                class="card-img-top w-25 me-3"
+              >
+              <div class="card-body">
+                <h5 class="text-primary">${show.show.name}</h5>
+                <p class="card-text"><small>${show.show.summary}</small></p>
+                <button class="btn btn-outline-light btn-sm Show-getEpisodes">
+                  Episodes
+                </button>
+              </div>
+            </div>
+          </div>
+        `);
 
         this.$showsList.append($show);
       }
@@ -60,7 +65,6 @@ $(document).ready(() => {
     run() {
       this.$searchForm.on('submit', async (evt) => {
         evt.preventDefault();
-        // console.log(await this.getShows());
         await this.displayShows();
       });
     }
