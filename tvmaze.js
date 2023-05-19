@@ -1,12 +1,10 @@
 $(document).ready(() => {
-  class TVShowsApp {
-    constructor() {
-      this.$showsList = $('#showsList');
-      this.$episodesArea = $('#episodesArea');
-      this.$searchForm = $('#searchForm');
-      this.$episodesBtn = $(`.Show-getEpisodes`);
-      this.$imgNotFound = `https://tinyurl.com/tv-missing`;
-    }
+  const TVShowsApp = {
+    $showsList: $('#showsList'),
+    $episodesArea: $('#episodesArea'),
+    $searchForm: $('#searchForm'),
+    $episodesBtn: $(`.Show-getEpisodes`),
+    $imgNotFound: `https://tinyurl.com/tv-missing`,
 
     async getShows() {
       try {
@@ -22,7 +20,7 @@ $(document).ready(() => {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
 
     populateShows(shows) {
       this.$showsList.empty();
@@ -54,14 +52,14 @@ $(document).ready(() => {
 
         this.$showsList.append($show);
       }
-    }
+    },
 
     async displayShows() {
       const shows = await this.getShows();
 
       this.$episodesArea.hide();
       this.populateShows(shows);
-    }
+    },
 
     getEpisodes() {
       this.$showsList.on('click', '.Show-getEpisodes', (evt) => {
@@ -69,9 +67,9 @@ $(document).ready(() => {
         const showIDDiv = $(evt.target).closest('[data-show-id]');
         console.log(showIDDiv[0]);
       });
-    }
+    },
 
-    populateEpisodes() {}
+    populateEpisodes() {},
 
     run() {
       this.$searchForm.on('submit', async (evt) => {
@@ -80,9 +78,8 @@ $(document).ready(() => {
       });
 
       this.getEpisodes();
-    }
-  }
+    },
+  };
 
-  const app = new TVShowsApp();
-  app.run();
+  TVShowsApp.run();
 });
