@@ -26,8 +26,6 @@ $(document).ready(() => {
       this.$showsList.empty();
 
       for (let show of shows) {
-        console.log(show.show.id);
-
         const imageSrc =
           show.show.image && show.show.image !== null
             ? show.show.image.medium
@@ -63,20 +61,20 @@ $(document).ready(() => {
       this.populateShows(shows);
     },
 
-    getShowID() {
+    getID() {
+      this.showId = null;
       this.$showsList.on('click', '.Show-getEpisodes', (evt) => {
         evt.preventDefault();
 
         this.selectedShow = $(evt.target).closest('[data-show-id]');
-        this.showId = parseInt(this.selectedShow[0].dataset.showId);
-        console.log(this.showId);
-        return this.showID;
+        this.showID = parseInt(this.selectedShow[0].dataset.showId);
+
+        console.log(this.showID);
+        return this.showId;
       });
     },
 
-    async getEpisodes() {
-      this.id = getShowID();
-    },
+    async getEpisodes() {},
 
     populateEpisodes() {},
 
@@ -85,8 +83,7 @@ $(document).ready(() => {
         evt.preventDefault();
         await this.displayShows();
       });
-
-      this.getEpisodes();
+      this.getID();
     },
   };
 
