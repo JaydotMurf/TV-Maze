@@ -5,6 +5,7 @@ $(document).ready(() => {
     $searchForm: $('#searchForm'),
     $episodesBtn: $(`.Show-getEpisodes`),
     $imgNotFound: `https://tinyurl.com/tv-missing`,
+    selectedShowId: null,
 
     async getShows() {
       try {
@@ -15,7 +16,6 @@ $(document).ready(() => {
             params: { q: searchTerm },
           }
         );
-        console.log(searchResults.data);
         return searchResults.data;
       } catch (error) {
         console.log(error);
@@ -26,6 +26,8 @@ $(document).ready(() => {
       this.$showsList.empty();
 
       for (let show of shows) {
+        console.log(show.show.id);
+
         const imageSrc =
           show.show.image && show.show.image !== null
             ? show.show.image.medium
@@ -61,12 +63,19 @@ $(document).ready(() => {
       this.populateShows(shows);
     },
 
-    getEpisodes() {
+    getShowID() {
       this.$showsList.on('click', '.Show-getEpisodes', (evt) => {
         evt.preventDefault();
-        const showIDDiv = $(evt.target).closest('[data-show-id]');
-        console.log(showIDDiv[0]);
+
+        this.selectedShow = $(evt.target).closest('[data-show-id]');
+        this.showId = parseInt(this.selectedShow[0].dataset.showId);
+        console.log(this.showId);
+        return this.showID;
       });
+    },
+
+    async getEpisodes() {
+      this.id = getShowID();
     },
 
     populateEpisodes() {},
