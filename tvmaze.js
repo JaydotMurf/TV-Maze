@@ -32,7 +32,7 @@ $(document).ready(() => {
             : this.$imgNotFound;
 
         const $show = $(`
-          <div data-show-id="${show.show.id}" class="Show col-md-12 col-lg-6 mb-4">
+          <div data-show-id="${show.show.id}" data-toggle="modal" data-target="#myModal" class="Show col-md-12 col-lg-6 mb-4">
             <div class="card">
               <img
                 src="${imageSrc}"
@@ -61,29 +61,47 @@ $(document).ready(() => {
       this.populateShows(shows);
     },
 
-    getID() {
-      this.showId = null;
-      this.$showsList.on('click', '.Show-getEpisodes', (evt) => {
-        evt.preventDefault();
-
-        this.selectedShow = $(evt.target).closest('[data-show-id]');
-        this.showID = parseInt(this.selectedShow[0].dataset.showId);
-
-        console.log(this.showID);
-        return this.showId;
-      });
+    getShowID(evt) {
+      const selectedShow = $(evt.target).closest('[data-show-id]');
+      this.selectedShowId = parseInt(selectedShow[0].dataset.showId);
+      return this.selectedShowId;
     },
 
-    async getEpisodes() {},
+    async getEpisodes(evt) {
+      this.ID = this.getShowID(evt);
+      if (this.ID !== null) {
+        try {
+          const response = await axios.get(
+            `https://api.tvmaze.com/shows/${this.ID}/episodes`
+          );
+          const episodes = response.data.map((episode) => ({
+            episodeID: episode.id,
+            episodeName: episode.name,
+            season: episode.season,
+            episodeNumber: episode.number,
+          }));
+          return episodes;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
 
-    populateEpisodes() {},
+    async populateEpisodes(evt) {
+      this.arrayOfEpisodes = await this.getEpisodes(evt);
+      console.log(this.arrayOfEpisodes);
+    },
 
     run() {
       this.$searchForm.on('submit', async (evt) => {
         evt.preventDefault();
         await this.displayShows();
       });
-      this.getID();
+
+      this.$showsList.on('click', '.Show-getEpisodes', async (evt) => {
+        evt.preventDefault();
+        await this.populateEpisodes(evt);
+      });
     },
   };
 
