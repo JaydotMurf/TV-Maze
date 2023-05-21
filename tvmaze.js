@@ -2,7 +2,10 @@ $(document).ready(() => {
   const TVShowsApp = {
     $showsList: $('#showsList'),
     $episodesArea: $('#episodesArea'),
+    $episodesList: $('#episodesList'),
     $searchForm: $('#searchForm'),
+    $modal: $('#myModal'),
+    $modalBody: $('.modalBody'),
     $episodesBtn: $(`.Show-getEpisodes`),
     $imgNotFound: `https://tinyurl.com/tv-missing`,
     selectedShowId: null,
@@ -42,7 +45,7 @@ $(document).ready(() => {
               <div class="card-body">
                 <h5 class="text-primary">${show.show.name}</h5>
                 <p class="card-text"><small>${show.show.summary}</small></p>
-                <button class="btn btn-outline-light btn-sm Show-getEpisodes">
+                <button class="btn btn-outline-light btn-sm Show-getEpisodes" data-toggle="modal" data-target="#episodeModal">
                   Episodes
                 </button>
               </div>
@@ -90,6 +93,17 @@ $(document).ready(() => {
     async populateEpisodes(evt) {
       this.arrayOfEpisodes = await this.getEpisodes(evt);
       console.log(this.arrayOfEpisodes);
+
+      this.arrayOfEpisodes.forEach((episode) => {
+        console.log(episode);
+        this.$episodesList.append(
+          $(
+            `<li><p>Name: ${episode.episodeName} Season: ${episode.season} Episode Number: ${episode.episodeNumber}</p></li>`
+          )
+        );
+      });
+
+      this.$episodesArea.css('display', 'inline');
     },
 
     run() {
