@@ -101,6 +101,30 @@ $(document).ready(() => {
       });
 
       this.$episodesArea.show();
+
+      // Scroll to the EpisodesList section
+      $('html, body').animate(
+        {
+          scrollTop: $('#episodesArea').offset().top,
+        },
+        400
+      );
+    },
+
+    addBackToTopButton() {
+      const $backToTopBtn = $('#backToTopBtn');
+
+      $(window).scroll(() => {
+        if ($(window).scrollTop() > 100) {
+          $backToTopBtn.fadeIn();
+        } else {
+          $backToTopBtn.fadeOut();
+        }
+      });
+
+      $backToTopBtn.on('click', () => {
+        $('html, body').animate({ scrollTop: 0 }, 500);
+      });
     },
 
     run() {
@@ -113,6 +137,8 @@ $(document).ready(() => {
         evt.preventDefault();
         await this.populateEpisodes(evt);
       });
+
+      this.addBackToTopButton();
     },
   };
 
