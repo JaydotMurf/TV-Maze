@@ -20,7 +20,7 @@ A web application for searching and displaying TV shows using the TV Maze API.
 
 ## Demo
 
-You can find a live demo of the TV-Maze application [here](https://jaydotmurf.github.io/TV-Maze).
+You can find a live demo of the TV-Maze application [here](https://jaydotmurf.github.io/TV-Maze/index.html).
 
 ## Installation
 
